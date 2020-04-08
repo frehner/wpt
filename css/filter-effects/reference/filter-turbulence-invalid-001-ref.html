@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<style>
+.target {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background-color: green;
+}
+</style>
+<div class="target" style="filter: url(#fn)"></div>
+<div class="target" style="filter: url(#fn)"></div>
+<div class="target"></div>
+<div class="target"></div>
+<svg height="0" color-interpolation-filters="sRGB">
+  <!-- type=fractalNoise -->
+  <filter id="fn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise"/>
+      <feColorMatrix values="1 0 0 0 0, 0 1 0 0 0.5, 0 0 1 0 0, 0 0 0 1 1"/>
+  </filter>
+</svg>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<title>CSS Filter Effects: feTurbulence with negative values from baseFrequency</title>
+<link rel="help" href="https://drafts.fxtf.org/filter-effects/#element-attrdef-feturbulence-basefrequency">
+<link rel="help" href="https://crbug.com/1068863"/>
+<link rel="match" href="reference/filter-turbulence-invalid-001-ref.html">
+<meta name="assert" content="This test checks that negative baseFrequency values are unsupported for feTurbulence.">
+<style>
+.target {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background-color: red;
+}
+</style>
+<div class="target" style="filter: url(#fn1)"></div>
+<div class="target" style="filter: url(#fn2)"></div>
+<div class="target" style="filter: url(#tb1)"></div>
+<div class="target" style="filter: url(#tb2)"></div>
+<svg height="0" color-interpolation-filters="sRGB">
+    <!-- type=fractalNoise -->
+    <filter id="fn1" x="0" y="0" width="1" height="1">
+        <feTurbulence type="fractalNoise" baseFrequency="-1 1"/>
+        <feColorMatrix values="1 0 0 0 0, 0 1 0 0 0.5, 0 0 1 0 0, 0 0 0 1 1"/>
+    </filter>
+
+    <filter id="fn2" x="0" y="0" width="1" height="1">
+        <feTurbulence type="fractalNoise" baseFrequency="1 -1"/>
+        <feColorMatrix values="1 0 0 0 0, 0 1 0 0 0.5, 0 0 1 0 0, 0 0 0 1 1"/>
+    </filter>
+
+    <!-- type=turbulence -->
+    <filter id="tb1" x="0" y="0" width="1" height="1">
+        <feTurbulence type="turbulence" baseFrequency="-1 1"/>
+        <!-- Using 0.5 on the matrices below can cause in different engines
+        an off-by-one difference (127 vs. 128), when rounding 127.5 (255 * 0.5)
+        either up or downwards.
+        Hence, the test uses 0.502 (~128/255) to avoid this tie-break. -->
+        <feColorMatrix values="1 0 0 0 0, 0 1 0 0 0.502, 0 0 1 0 0, 0 0 0 1 1"/>
+    </filter>
+
+    <filter id="tb2" x="0" y="0" width="1" height="1">
+        <feTurbulence type="turbulence" baseFrequency="1 -1"/>
+        <feColorMatrix values="1 0 0 0 0, 0 1 0 0 0.502, 0 0 1 0 0, 0 0 0 1 1"/>
+    </filter>
+</svg>
